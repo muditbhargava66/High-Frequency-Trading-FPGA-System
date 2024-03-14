@@ -81,7 +81,7 @@ To use and modify the High-Frequency Trading FPGA System, you need the following
 ### Installation
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/hft-fpga-system.git
+   git clone https://github.com/muditbhargava66/High-Frequency-Trading-FPGA-System.git
    ```
 2. Open Xilinx Vivado and create a new project.
 3. Add the source files from the `src` directory to the project.
