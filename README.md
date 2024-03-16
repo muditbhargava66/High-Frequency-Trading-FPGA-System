@@ -1,5 +1,3 @@
-Sure! Here's an updated version of the README file that includes a section for future or incomplete work with checkboxes for each task:
-
 # High-Frequency Trading FPGA System
 
 This repository contains the code and documentation for a high-frequency trading (HFT) system implemented on an FPGA. The system utilizes a TCP/IP stack for communication, an order matching engine for trade execution, and a custom IP core for accelerated processing. The design is optimized for ultra-low latency and high throughput.
