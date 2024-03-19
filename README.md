@@ -86,6 +86,8 @@ The custom IP core can be integrated into the system using AXI Stream interfaces
 
 The risk management module monitors the trades and positions to ensure compliance with predefined risk limits. It validates trades before execution and provides real-time position monitoring.
 
+![Block Diagram](images\hft-fpga-png-output.png)
+
 ## Getting Started
 
 ### Prerequisites
