@@ -136,13 +136,22 @@ module top_level (
   );
 
   // Instantiate the order matching engine module
+  wire [31:0] order_data;
+  wire order_valid;
+  wire [31:0] trade_data;
+  wire trade_valid;
+  wire [31:0] position_update;
+  wire position_update_valid;
+  wire [31:0] exposure_update;
+  wire exposure_update_valid;
+
   order_matching_engine order_matching_inst (
     .clk(clk),
     .rst_n(rst_n),
     .order_data(custom_ip_rx_data),
     .order_valid(custom_ip_rx_valid),
-    .trade_data(app_to_tcp_data),
-    .trade_valid(app_to_tcp_valid),
+    .trade_data(trade_data),
+    .trade_valid(trade_valid),
     .tcp_rx_data(tcp_to_app_data),
     .tcp_rx_valid(tcp_to_app_valid),
     .tcp_tx_data(custom_ip_tx_data),
@@ -154,5 +163,37 @@ module top_level (
     .m_axis_valid(custom_ip_rx_valid),
     .m_axis_ready(custom_ip_rx_ready)
   );
+
+  // Instantiate the risk management module
+  wire trade_approved;
+  wire [31:0] current_position;
+  wire [31:0] current_exposure;
+
+  risk_management risk_mgmt_inst (
+    .clk(clk),
+    .rst_n(rst_n),
+    .trade_data(trade_data),
+    .trade_valid(trade_valid),
+    .trade_approved(trade_approved),
+    .position_update(position_update),
+    .position_update_valid(position_update_valid),
+    .current_position(current_position),
+    .exposure_update(exposure_update),
+    .exposure_update_valid(exposure_update_valid),
+    .current_exposure(current_exposure),
+    .max_exposure_limit(32'h1000000),  // Example max exposure limit
+    .max_position_limit(32'h100000)    // Example max position limit
+  );
+
+  // Connect signals between modules
+  assign order_data = custom_ip_rx_data;
+  assign order_valid = custom_ip_rx_valid && trade_approved;
+  assign position_update = trade_data;
+  assign position_update_valid = trade_valid && trade_approved;
+  assign exposure_update = trade_data;
+  assign exposure_update_valid = trade_valid && trade_approved;
+  assign app_to_tcp_data = trade_data;
+  assign app_to_tcp_valid = trade_valid && trade_approved;
+  assign custom_ip_rx_ready = tcp_to_app_ready;
 
 endmodule

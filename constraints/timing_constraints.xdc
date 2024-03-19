@@ -18,7 +18,7 @@ set_output_delay -clock clk_100MHz -max 1.000 [get_ports eth_tx_valid]
 set_output_delay -clock clk_100MHz -max 1.000 [get_ports custom_ip_status[*]]
 
 # False path constraints
-set_false_path -from [get_ports rst_n] -to [all_registers]
+# set_false_path -from [get_ports rst_n] -to [all_registers]
 
 # Multicycle path constraints
 set_multicycle_path -setup -from [get_clocks clk_100MHz] -to [get_clocks clk_100MHz] 2
@@ -36,8 +36,8 @@ set_case_analysis 1 [get_pins -hier *cdc_sync_fifo_wr_en_reg/C]
 set_case_analysis 1 [get_pins -hier *cdc_sync_fifo_rd_en_reg/C]
 
 # Timing logics
-set_logic_one [get_ports -hier *cdc_sync_fifo_wr_rst_busy*]
-set_logic_zero [get_ports -hier *cdc_sync_fifo_rd_rst_busy*]
+# set_logic_one [get_ports -hier *cdc_sync_fifo_wr_rst_busy*]
+# set_logic_zero [get_ports -hier *cdc_sync_fifo_rd_rst_busy*]
 
 # Area constraints
 create_pblock pblock_top_level
@@ -75,3 +75,15 @@ set_property PACKAGE_PIN K3 [get_ports {eth_tx_data[7]}]
 set_property PACKAGE_PIN J3 [get_ports {eth_tx_data[8]}]
 set_property PACKAGE_PIN H3 [get_ports {eth_tx_data[9]}]
 set_property PACKAGE_PIN G3 [get_ports eth_tx_valid]
+
+# I/O standards
+set_property IOSTANDARD LVCMOS33 [get_ports clk]
+set_property IOSTANDARD LVCMOS33 [get_ports rst_n]
+set_property IOSTANDARD LVCMOS33 [get_ports eth_rx_data[*]]
+set_property IOSTANDARD LVCMOS33 [get_ports eth_rx_valid]
+set_property IOSTANDARD LVCMOS33 [get_ports eth_tx_ready]
+set_property IOSTANDARD LVCMOS33 [get_ports custom_ip_control[*]]
+set_property IOSTANDARD LVCMOS33 [get_ports eth_rx_ready]
+set_property IOSTANDARD LVCMOS33 [get_ports eth_tx_data[*]]
+set_property IOSTANDARD LVCMOS33 [get_ports eth_tx_valid]
+set_property IOSTANDARD LVCMOS33 [get_ports custom_ip_status[*]]

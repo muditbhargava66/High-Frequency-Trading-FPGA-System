@@ -86,26 +86,47 @@ module tb_order_matching_engine;
 
     // Test case 1: Send a buy order
     #(CLK_PERIOD*2);
-    order_data = 32'h80000001;  // Buy order with price 1
+    order_data = {2'b00, 2'b00, 8'h10, 8'h01, 8'h00, 4'h0};  // Buy limit order with price 16 and quantity 1
     order_valid = 1'b1;
     #(CLK_PERIOD);
     order_valid = 1'b0;
 
     // Test case 2: Send a sell order
     #(CLK_PERIOD*2);
-    order_data = 32'h00000002;  // Sell order with price 2
+    order_data = {2'b00, 2'b00, 8'h20, 8'h02, 8'h00, 4'h0};  // Sell limit order with price 32 and quantity 2
     order_valid = 1'b1;
     #(CLK_PERIOD);
     order_valid = 1'b0;
 
     // Test case 3: Send a matching buy order
     #(CLK_PERIOD*2);
-    order_data = 32'h80000002;  // Buy order with price 2
+    order_data = {2'b00, 2'b00, 8'h20, 8'h02, 8'h00, 4'h0};  // Buy limit order with price 32 and quantity 2
     order_valid = 1'b1;
     #(CLK_PERIOD);
     order_valid = 1'b0;
 
-    // Test case 4: Receive a TCP packet
+    // Test case 4: Send a market buy order
+    #(CLK_PERIOD*2);
+    order_data = {2'b01, 2'b00, 8'h00, 8'h03, 8'h00, 4'h0};  // Buy market order with quantity 3
+    order_valid = 1'b1;
+    #(CLK_PERIOD);
+    order_valid = 1'b0;
+
+    // Test case 5: Send a sell stop order
+    #(CLK_PERIOD*2);
+    order_data = {2'b10, 2'b00, 8'h30, 8'h04, 8'h40, 4'h0};  // Sell stop order with price 48, quantity 4, and stop price 64
+    order_valid = 1'b1;
+    #(CLK_PERIOD);
+    order_valid = 1'b0;
+
+    // Test case 6: Send a buy trailing stop order
+    #(CLK_PERIOD*2);
+    order_data = {2'b11, 2'b00, 8'h50, 8'h05, 8'h60, 4'h2};  // Buy trailing stop order with price 80, quantity 5, stop price 96, and trail 2
+    order_valid = 1'b1;
+    #(CLK_PERIOD);
+    order_valid = 1'b0;
+
+    // Test case 7: Receive a TCP packet
     #(CLK_PERIOD*2);
     tcp_rx_data = 32'h12345678;
     tcp_rx_valid = 1'b1;
@@ -117,26 +138,26 @@ module tb_order_matching_engine;
     $finish;
   end
 
-    // Assertion for trade execution
-    always @(posedge clk) begin
-      if (trade_valid) begin
-        $display("Trade executed: price = %d", trade_data[30:0]);
-        if (trade_data[31] == 1'b1 && trade_data[30:0] == 32'd2)
-          $display("Trade data is correct");
-        else
-          $error("Incorrect trade data");
-      end
+  // Assertion for trade execution
+  always @(posedge clk) begin
+    if (trade_valid) begin
+      $display("Trade executed: price = %d, quantity = %d", trade_data[7:0], trade_data[15:8]);
+      if (trade_data[7:0] == 8'h20 && trade_data[15:8] == 8'h02)
+        $display("Trade data is correct");
+      else
+        $error("Incorrect trade data");
     end
-    
-    // Assertion for TCP transmit data
-    always @(posedge clk) begin
-      if (tcp_tx_valid) begin
-        $display("TCP transmit data: %h", tcp_tx_data);
-        if (tcp_tx_data == 32'h12345678)
-          $display("TCP transmit data is correct");
-        else
-          $error("Incorrect TCP transmit data");
-      end
+  end
+
+  // Assertion for TCP transmit data
+  always @(posedge clk) begin
+    if (tcp_tx_valid) begin
+      $display("TCP transmit data: %h", tcp_tx_data);
+      if (tcp_tx_data == {2'b11, 30'h1234567})
+        $display("TCP transmit data is correct");
+      else
+        $error("Incorrect TCP transmit data");
     end
+  end
 
 endmodule
