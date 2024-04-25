@@ -172,4 +172,12 @@ Contributions to the High-Frequency Trading FPGA System are welcome! If you find
 The High-Frequency Trading FPGA System is open-source and released under the [MIT License](LICENSE). Feel free to use, modify, and distribute the code for both commercial and non-commercial purposes.
 
 
-<iframe style="width:100%;height:auto;min-width:600px;min-height:400px;" src="https://star-history.com/embed?secret=WU9VUl9QRVJTT05BTF9BQ0NFU1NfVE9LRU4=#muditbhargava66/High-Frequency-Trading-FPGA-System&Date" frameBorder="0"></iframe>
+## Star History
+
+<a href="https://star-history.com/#muditbhargava66/High-Frequency-Trading-FPGA-System&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=muditbhargava66/High-Frequency-Trading-FPGA-System&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=muditbhargava66/High-Frequency-Trading-FPGA-System&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=muditbhargava66/High-Frequency-Trading-FPGA-System&type=Date" />
+ </picture>
+</a>
